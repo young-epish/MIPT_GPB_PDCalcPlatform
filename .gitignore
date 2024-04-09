@@ -1,0 +1,21 @@
+# Виртуальная среда
+env/
+venv/
+__pycache__/
+
+# Файлы IDE и редакторов
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Файлы операционной системы
+.DS_Store
+Thumbs.db
+
+# Файлы Python
+*.pyc
+
+# Другие файлы и папки
+*.log
+*.db
