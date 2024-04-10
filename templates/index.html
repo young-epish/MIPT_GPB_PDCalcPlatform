@@ -1,14 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Прогноз МЛ Модели</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расчет вероятности дефолта (PD)</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <h2>Введите данные для прогноза</h2>
-    <form action="/predict" method="post">
-        <input type="text" name="feature1" placeholder="Признак 1">
-        <input type="text" name="feature2" placeholder="Признак 2">
-        <button type="submit">Предсказать</button>
-    </form>
+    <div class="container">
+        <h2>Введите данные для расчета вероятности дефолта</h2>
+        <form action="/predict" method="post">
+            <div class="form-row">
+                <input type="number" class="input-field" name="p1500" placeholder="Введите значение" value="{{ request.form.p1500 if request.form.p1500 else '' }}" required step="any">
+                <label for="p1500">Краткосрочные обязательства, руб.</label>
+            </div>
+            
+            <div class="form-row">
+                <input type="number" class="input-field" name="p1250_std" placeholder="Введите значение" value="{{ request.form.p1250_std if request.form.p1250_std else '' }}" required step="any">
+                <label for="p1250_std">Отношение денежных средств к краткосрочным обязательствам</label>
+            </div>
+            
+            <div class="form-row">
+                <input type="number" class="input-field" name="p2400_a" placeholder="Введите значение" value="{{ request.form.p2400_a if request.form.p2400_a else '' }}" required step="any">
+                <label for="p2400_a">Отношение чистой прибыли (убытка) к активам</label>
+            </div>
+            
+            <div class="form-row">
+                <input type="number" class="input-field" name="p1700_rt" placeholder="Введите значение" value="{{ request.form.p1700_rt if request.form.p1700_rt else '' }}" required step="any">
+                <label for="p1700_rt">Отношение показателей баланса за текущий год к предыдущему</label>
+            </div>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="kz_days_rt" placeholder="Введите значение"value="{{ request.form.kz_days_rt if request.form.kz_days_rt else '' }}" required step="any">
+                <label for="kz_days_rt">Отношение себестоимости продаж к краткосрочной кредиторской задолженности * 365 дней за текущий год к предыдущему</label>
+            </div>
+
+            <br>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="Ratio_ClaimSum_to_Assets" placeholder="Введите значение" value="{{ request.form.Ratio_ClaimSum_to_Assets if request.form.Ratio_ClaimSum_to_Assets else '' }}" required step="any">
+                <label for="Ratio_ClaimSum_to_Assets">Отношение суммы активных исков в качестве ответчика к средним активам заемщика за год</label>
+            </div>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="Ratio_ClaimSum_to_Revenue" placeholder="Введите значение" value="{{ request.form.Ratio_ClaimSum_to_Revenue if request.form.Ratio_ClaimSum_to_Revenue else '' }}" required step="any">
+                <label for="Ratio_ClaimSum_to_Revenue">Отношение суммы активных исков в качестве ответчика к выручке заемщика</label>
+            </div>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="Ratio_ClaimSum_to_Capital" placeholder="Введите значение" value="{{ request.form.Ratio_ClaimSum_to_Capital if request.form.Ratio_ClaimSum_to_Capital else '' }}" required step="any">
+                <label for="Ratio_ClaimSum_to_Capital">Отношение суммы активных исков в качестве ответчика к капиталу заемщика</label>
+            </div>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="Ratio_ClaimSum_to_Funds" placeholder="Введите значение" value="{{ request.form.Ratio_ClaimSum_to_Funds if request.form.Ratio_ClaimSum_to_Funds else '' }}" required step="any">
+                <label for="Ratio_ClaimSum_to_Funds">Отношение суммы активных исков в качестве ответчика к денежным средствам заемщика</label>
+            </div>
+
+            <div class="form-row">
+                <input type="number" class="input-field" name="Ratio_ClaimSum_to_EBT" placeholder="Введите значение" value="{{ request.form.Ratio_ClaimSum_to_EBT if request.form.Ratio_ClaimSum_to_EBT else '' }}" required step="any">
+                <label for="Ratio_ClaimSum_to_EBT">Отношение суммы активных исков в качестве ответчика к EBT заемщика</label>
+            </div>
+
+            <br>
+
+            <div class="form-row submit-row">
+                <button type="submit" class="submit-button">Предсказать</button>
+            </div>
+        </form>
+        
+        <div class="predictions">
+            <p class="prediction">{{ prediction_text_1 }}</p>
+            <p class="prediction">{{ prediction_text_2 }}</p>
+            <p class="prediction">{{ prediction_text }}</p>
+        </div>
+    </div>
 </body>
 </html>
